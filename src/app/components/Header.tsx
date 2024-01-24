@@ -10,7 +10,7 @@ type Props = {
 const Header = ({ month, year, handleDate }: Props) => {
     return (
         <>
-            <div className="flex justify-between bg-gray-100 p-4">
+            <div className="flex justify-between bg-gray-100 p-4 shadow-md">
                 <div
                     className="bg-slate-400 text-white p-2 rounded-md shadow-md hover:bg-slate-300 cursor-pointer"
                     onClick={() => handleDate(-1)}
