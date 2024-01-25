@@ -2,11 +2,30 @@
 
 import { useState } from 'react'
 import Header from './components/Header'
-import { OneOrMinus } from './type/type'
+import { OneOrMinus, TaskType } from './type/type'
 import { getDay, getDaysInMonth } from 'date-fns'
 import CalendarCell from './components/CalendarCell'
 
+const testTasks = [
+    {
+        id: 1,
+        title: 'タスク1',
+        date: new Date(2024, 0, 24),
+    },
+    {
+        id: 2,
+        title: 'タスク2',
+        date: new Date(2024, 0, 26),
+    },
+    {
+        id: 3,
+        title: 'タスク3',
+        date: new Date(2024, 1, 26),
+    },
+]
+
 export default function Home() {
+    const [tasks, setTasks] = useState<TaskType[]>(testTasks)
     const [month, setMonth] = useState<number>(new Date().getMonth() + 1)
     const [year, setYear] = useState<number>(new Date().getFullYear())
     const handleDate = (n: OneOrMinus) => {
@@ -40,6 +59,8 @@ export default function Home() {
                         year={year}
                         month={month}
                         day={day}
+                        tasks={tasks}
+                        setTasks={setTasks}
                     />
                 ))}
             </div>

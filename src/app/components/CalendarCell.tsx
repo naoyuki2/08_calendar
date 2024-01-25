@@ -1,29 +1,17 @@
 import { isSameDay, isSaturday, isSunday, isToday } from 'date-fns'
-import { useState } from 'react'
+import { TaskType } from '../type/type'
+import Modal from './Modal'
 
 type Props = {
     year: number
     month: number
     day: number
+    tasks: TaskType[]
+    setTasks: React.Dispatch<React.SetStateAction<TaskType[]>>
 }
 
-type TaskType = {
-    id: number
-    title: string
-    date: Date
-}
-
-const testTasks = [
-    {
-        id: 1,
-        title: 'タスク1',
-        date: new Date(2024, 0, 24),
-    },
-]
-
-const CalendarCell = ({ year, month, day }: Props) => {
-    const [tasks, setTasks] = useState<TaskType[]>(testTasks)
-
+const CalendarCell = ({ year, month, day, tasks, setTasks }: Props) => {
+    console.log(tasks)
     const isTod = isToday(new Date(year, month - 1, day))
 
     const isSat = isSaturday(new Date(year, month - 1, day))
@@ -45,24 +33,40 @@ const CalendarCell = ({ year, month, day }: Props) => {
     return (
         <>
             {day <= 31 ? (
-                <div className={cellClassName}>
-                    {day}
-                    {tasks.map((task) => {
-                        return (
-                            isSameDay(
-                                task.date,
-                                new Date(year, month - 1, day),
-                            ) && (
-                                <div
-                                    key={task.id}
-                                    className="text-xs text-red-500"
-                                >
-                                    {task.title}
-                                </div>
+                <>
+                    <button
+                        className={cellClassName}
+                        onClick={() => {
+                            const modal = document.getElementById('my_modal_1')
+                            if (modal instanceof HTMLDialogElement) {
+                                modal.showModal()
+                            }
+                        }}
+                    >
+                        {day}
+                        {tasks.map((task) => {
+                            return (
+                                isSameDay(
+                                    task.date,
+                                    new Date(year, month - 1, day),
+                                ) && (
+                                    <div
+                                        key={task.id}
+                                        className="text-xs text-red-500"
+                                    >
+                                        {task.title}
+                                    </div>
+                                )
                             )
-                        )
-                    })}
-                </div>
+                        })}
+                    </button>
+                    <Modal
+                        year={year}
+                        month={month}
+                        day={day}
+                        setTasks={setTasks}
+                    />
+                </>
             ) : (
                 <div></div>
             )}
