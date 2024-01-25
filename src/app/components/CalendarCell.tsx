@@ -1,6 +1,6 @@
 import { isSameDay, isSaturday, isSunday, isToday } from 'date-fns'
 import { TaskType } from '../type/type'
-import Modal from './Modal'
+import Link from 'next/link'
 
 type Props = {
     year: number
@@ -11,7 +11,6 @@ type Props = {
 }
 
 const CalendarCell = ({ year, month, day, tasks, setTasks }: Props) => {
-    console.log(tasks)
     const isTod = isToday(new Date(year, month - 1, day))
 
     const isSat = isSaturday(new Date(year, month - 1, day))
@@ -34,14 +33,16 @@ const CalendarCell = ({ year, month, day, tasks, setTasks }: Props) => {
         <>
             {day <= 31 ? (
                 <>
-                    <button
-                        className={cellClassName}
-                        onClick={() => {
-                            const modal = document.getElementById('my_modal_1')
-                            if (modal instanceof HTMLDialogElement) {
-                                modal.showModal()
-                            }
+                    <Link
+                        href={{
+                            pathname: '/task',
+                            query: {
+                                year: year,
+                                month: month,
+                                day: day,
+                            },
                         }}
+                        className={cellClassName}
                     >
                         {day}
                         {tasks.map((task) => {
@@ -59,13 +60,7 @@ const CalendarCell = ({ year, month, day, tasks, setTasks }: Props) => {
                                 )
                             )
                         })}
-                    </button>
-                    <Modal
-                        year={year}
-                        month={month}
-                        day={day}
-                        setTasks={setTasks}
-                    />
+                    </Link>
                 </>
             ) : (
                 <div></div>
