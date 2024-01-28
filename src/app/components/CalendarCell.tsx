@@ -1,6 +1,7 @@
 import { isSameDay, isSaturday, isSunday, isToday } from 'date-fns'
 import { TaskType } from '../type/type'
-import Link from 'next/link'
+import { useDisclosure } from '@chakra-ui/react'
+import Modal from './Modal'
 
 type Props = {
     year: number
@@ -11,6 +12,7 @@ type Props = {
 }
 
 const CalendarCell = ({ year, month, day, tasks, setTasks }: Props) => {
+    const { isOpen, onOpen, onClose } = useDisclosure()
     const isTod = isToday(new Date(year, month - 1, day))
 
     const isSat = isSaturday(new Date(year, month - 1, day))
@@ -18,7 +20,7 @@ const CalendarCell = ({ year, month, day, tasks, setTasks }: Props) => {
     const isSun = isSunday(new Date(year, month - 1, day))
 
     let cellClassName =
-        'shadow-md rounded-md p-5 text-center cursor-pointer hover:bg-slate-100 text-xl'
+        'shadow-md rounded-md p-5 text-center cursor-pointer hover:bg-slate-100'
     if (day <= 31) {
         if (isTod) {
             cellClassName += ' bg-green-200'
@@ -33,17 +35,7 @@ const CalendarCell = ({ year, month, day, tasks, setTasks }: Props) => {
         <>
             {day <= 31 ? (
                 <>
-                    <Link
-                        href={{
-                            pathname: '/task',
-                            query: {
-                                year: year,
-                                month: month,
-                                day: day,
-                            },
-                        }}
-                        className={cellClassName}
-                    >
+                    <button className={cellClassName} onClick={onOpen}>
                         {day}
                         {tasks.map((task) => {
                             return (
@@ -60,11 +52,20 @@ const CalendarCell = ({ year, month, day, tasks, setTasks }: Props) => {
                                 )
                             )
                         })}
-                    </Link>
+                    </button>
                 </>
             ) : (
                 <div></div>
             )}
+            <Modal
+                year={year}
+                month={month}
+                day={day}
+                tasks={tasks}
+                setTasks={setTasks}
+                isOpen={isOpen}
+                onClose={onClose}
+            />
         </>
     )
 }

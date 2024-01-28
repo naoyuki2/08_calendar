@@ -4,4 +4,5 @@ export type TaskType = {
     id: number
     title: string
     date: Date
+    isEdit: boolean
 }

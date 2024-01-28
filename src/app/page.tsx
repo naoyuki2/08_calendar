@@ -11,16 +11,19 @@ const testTasks = [
         id: 1,
         title: 'タスク1',
         date: new Date(2024, 0, 24),
+        isEdit: false,
     },
     {
         id: 2,
         title: 'タスク2',
         date: new Date(2024, 0, 26),
+        isEdit: false,
     },
     {
         id: 3,
         title: 'タスク3',
         date: new Date(2024, 1, 26),
+        isEdit: false,
     },
 ]
 
