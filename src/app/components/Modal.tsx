@@ -10,6 +10,7 @@ import {
     ModalBody,
 } from '@chakra-ui/react'
 import { isSameDay } from 'date-fns'
+import ModalTask from './ModalTask'
 
 type Props = {
     year: number
@@ -31,6 +32,7 @@ const Modal = ({
     onClose,
 }: Props) => {
     const [inputValue, setInputValue] = React.useState('' as string)
+    const [updateValue, setUpdateValue] = React.useState('' as string)
 
     const todayTask = tasks.filter((task) => {
         return isSameDay(task.date, new Date(year, month - 1, day))
@@ -65,55 +67,14 @@ const Modal = ({
                     </ModalHeader>
                     <ModalBody>
                         {todayTask.map((task) => (
-                            <div className="flex mb-2" key={task.id}>
-                                {task.isEdit ? (
-                                    <>
-                                        <input
-                                            type="text"
-                                            className="border border-gray-300 p-2 rounded-md w-full"
-                                            placeholder="タスクを入力してください"
-                                            value={inputValue}
-                                            onChange={(e) =>
-                                                setInputValue(e.target.value)
-                                            }
-                                        />
-                                        <div className="shadow rounded p-2 px-3 bg-purple-300 ml-3 w-20">
-                                            更新
-                                        </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className="text-center border border-gray-50 p-2 rounded-md w-full">
-                                            {task.title}
-                                        </div>
-                                        <div
-                                            className="shadow rounded p-2 px-3 bg-blue-300 ml-3 w-20"
-                                            onClick={() => {
-                                                setTasks((prev) => {
-                                                    return prev.map((t) => {
-                                                        if (t.id === task.id) {
-                                                            return {
-                                                                ...t,
-                                                                isEdit: true,
-                                                            }
-                                                        }
-                                                        return t
-                                                    })
-                                                })
-                                            }}
-                                        >
-                                            編集
-                                        </div>
-                                    </>
-                                )}
-
-                                <div
-                                    className="shadow rounded p-2 px-3 bg-red-300 ml-3 cursor-pointer w-20"
-                                    onClick={() => deleteTask(task.id)}
-                                >
-                                    削除
-                                </div>
-                            </div>
+                            <ModalTask
+                                key={task.id}
+                                task={task}
+                                inputValue={inputValue}
+                                setInputValue={setInputValue}
+                                setTasks={setTasks}
+                                deleteTask={deleteTask}
+                            />
                         ))}
                     </ModalBody>
                     <hr />
